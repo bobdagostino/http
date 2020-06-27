@@ -47,6 +47,8 @@ export class HttpPluginWeb extends WebPlugin implements HttpPlugin {
   }
 
   private makeFetchOptions(options: HttpOptions, fetchExtra: RequestInit): RequestInit {
+    //ROB aggiunta funziona toUrlEncoded 
+    const toUrlEncoded = (obj) => Object.keys(obj).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k])).join('&');    
     const req = {
       method: options.method || 'GET',
       headers: options.headers,
@@ -58,6 +60,8 @@ export class HttpPluginWeb extends WebPlugin implements HttpPlugin {
     if (contentType.indexOf('application/json') === 0) {
       req['body'] = JSON.stringify(options.data);
     } else if (contentType.indexOf('application/x-www-form-urlencoded') === 0) {
+		  //ROB impostato body della request
+		  req['body'] = toUrlEncoded(options.data);
     } else if (contentType.indexOf('multipart/form-data') === 0) {
     }
 
